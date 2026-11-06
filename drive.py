@@ -51,6 +51,15 @@ transform = transforms.Compose([
 sio = socketio.Server(cors_allowed_origins='*')
 app = Flask(__name__)
 
+@sio.on('connect')
+def connect(sid, environ):
+    print("Simulator connected! Starting engine...")
+    #Blank command to start the game's telemetry loop
+    sio.emit('steer', data={
+        'steering_angle': '0.0',
+        'throttle': '0.0'
+    })
+
 @sio.on('telemetry')
 def telemetry(sid, data):
     if data:
