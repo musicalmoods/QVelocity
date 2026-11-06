@@ -13,6 +13,7 @@ import eventlet
 import eventlet.wsgi
 from flask import Flask
 import sys
+import socket
 
 # Fallback option
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -104,8 +105,8 @@ if __name__ == '__main__':
     
     try:
         eventlet.wsgi.server(server_socket, app)
+        
     except KeyboardInterrupt:
-        # Graceful shutdown
         print("\n[SYSTEM] Shutdown signal received (Ctrl+C).")
         print("[SYSTEM] Severing socket connections and closing Port 4567...")
         server_socket.close()
