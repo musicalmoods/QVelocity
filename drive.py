@@ -13,6 +13,7 @@ import eventlet
 import eventlet.wsgi
 from flask import Flask
 import sys
+import socket
 
 # Fallback option
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -100,12 +101,15 @@ if __name__ == '__main__':
     app = socketio.Middleware(sio, app)
     
     server_socket = eventlet.listen(('', 4567))
+    
+    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    
     print("[SYSTEM] Server bound to port 4567. Waiting for simulator...")
     
     try:
         eventlet.wsgi.server(server_socket, app)
+        
     except KeyboardInterrupt:
-        # Graceful shutdown
         print("\n[SYSTEM] Shutdown signal received (Ctrl+C).")
         print("[SYSTEM] Severing socket connections and closing Port 4567...")
         server_socket.close()
