@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 
 # Extract the data first and set up the tensors
-df = pd.read_csv('quantum_training_data_master.csv').sample(n=5000, random_state=67)
+df = pd.read_csv('track2quantum_training_data_master.csv').sample(n=20000, random_state=67)
 features = torch.tensor(df[["f1", "f2", "f3", "f4"]].values, dtype=torch.float32)
 labels = torch.tensor(df["steering"].values, dtype=torch.float32).view(-1,1)
 
@@ -39,7 +39,7 @@ criterion = nn.MSELoss()
 
 
 # Training the Quantum Model
-epochs = 10
+epochs = 3
 for epoch in range(epochs):
     progress_bar = tqdm(dataloader, desc=f"Epoch {epoch+1}/{epochs}")
     for i, (batch_features, batch_labels) in enumerate(progress_bar):
@@ -52,6 +52,6 @@ for epoch in range(epochs):
     print(f"Epoch: {epoch+1} Completed!")
 
 
-torch.save(model.state_dict(), 'qnn_weightsv3.pt')
+torch.save(model.state_dict(), 'track2qnn_weights.pt')
 # We use state_dict instead of torch.save() so that if the model architecture changes, the mathematical numbers stay the
 # same, so we can keep using the same model without it getting outdated.
