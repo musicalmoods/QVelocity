@@ -67,4 +67,5 @@ for folder in trainingdata:
 out_df = pd.DataFrame(latent_data, columns=['f1', 'f2', 'f3', 'f4', 'steering'])
 out_df = out_df.sample(frac=1.0, random_state=42).reset_index(drop=True)
 out_df.to_csv('quantum_training_data_master.csv', index=False)
+torch.save(vision_model.state_dict(), 'vision_weights.pt')
 print(f"Extraction complete! Saved {len(out_df)} augmented samples to quantum_training_data_master.csv")
