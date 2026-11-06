@@ -19,7 +19,7 @@ vision_model.fc = torch.nn.Linear(vision_model.fc.in_features, 4) # 4 features f
 vision_model.eval().to(device)
 
 transform = transforms.Compose([
-    transforms.Lambda(lambda img: img.crop((0, 60, 320, 140))), # Crop out unnecessary stuff (sky,scenery,cars hood,etc)
+    transforms.Lambda(lambda img: img.crop((0, 60, 320, 140))), # Crop out unnecessary stuff (sky, scenery, cars, hood, etc)
     transforms.Resize((66, 200)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
