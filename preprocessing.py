@@ -8,9 +8,9 @@ from PIL import Image
 
 trainingdata = [
     r'Training_Data\Track1\Edge_Case',
-    r'Training_Data\Track1\Normal_Driving',
-    r'Training_Data\Track2\Edge_Cases',
-    r'Training_Data\Track2\Normal_Driving_Data'
+    r'Training_Data\Track1\Normal_Driving'
+    # r'Training_Data\Track2\Edge_Cases',
+    # r'Training_Data\Track2\Normal_Driving_Data'
 ]
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -66,6 +66,6 @@ for folder in trainingdata:
 
 out_df = pd.DataFrame(latent_data, columns=['f1', 'f2', 'f3', 'f4', 'steering'])
 out_df = out_df.sample(frac=1.0, random_state=42).reset_index(drop=True)
-out_df.to_csv('quantum_training_data_master.csv', index=False)
-torch.save(vision_model.state_dict(), 'vision_weights.pt')
-print(f"Extraction complete! Saved {len(out_df)} augmented samples to quantum_training_data_master.csv")
+out_df.to_csv('track1quantum_training_data_master.csv', index=False)
+torch.save(vision_model.state_dict(), 'track1vision_weights.pt')
+print(f"Extraction complete! Saved {len(out_df)} augmented samples to track1quantum_training_data_master.csv")

@@ -75,17 +75,17 @@ def telemetry(sid, data):
             image = Image.open(BytesIO(image_data))
             
             img_tensor = transform(image).unsqueeze(0).to(device)
-            
+            steering_multi = 2.5
             with torch.no_grad():
                 features = vision_model(img_tensor)
-                steering_angle = qnn_layer(features).item() * 2.5
+                steering_angle = qnn_layer(features).item() * steering_multi
             
-            if abs(steering_angle) > 0.4 * 2.5:
-                throttle = 0.1
+            if abs(steering_angle) > 0.2 * steering_multi:
+                throttle = 0.3
             elif speed < 15:
-                throttle = 0.5 
+                throttle = 0.8
             else:
-                throttle = 0.2  
+                throttle = 0.4
             
             sio.emit('steer', data={
                 'steering_angle': str(steering_angle),
