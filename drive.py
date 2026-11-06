@@ -20,7 +20,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 vision_model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
 vision_model.fc = torch.nn.Linear(vision_model.fc.in_features, 4)
 vision_model.eval().to(device)
-vision_model.load_state_dict(torch.load('vision_weights.pt', weights_only=True))
+vision_model.load_state_dict(torch.load('vision_weights_impr.pt', weights_only=True))
 
 num_qubits = 4
 feature_map = ZZFeatureMap(feature_dimension=num_qubits, reps=1)
@@ -37,7 +37,7 @@ qnn = EstimatorQNN(
 qnn_layer = TorchConnector(qnn)
 
 # Security precautions
-qnn_layer.load_state_dict(torch.load('qnn_weightsv2.pt', map_location=device, weights_only=True))
+qnn_layer.load_state_dict(torch.load('track2qnn_weights_2000_impr.pt', map_location=device, weights_only=True))
 qnn_layer.eval().to(device)
 
 transform = transforms.Compose([
@@ -74,15 +74,15 @@ def telemetry(sid, data):
             image = Image.open(BytesIO(image_data))
             
             img_tensor = transform(image).unsqueeze(0).to(device)
-            steering_multi = 2.5
+            steering_multi = 1
             with torch.no_grad():
                 features = vision_model(img_tensor)
                 steering_angle = qnn_layer(features).item() * steering_multi
             
             if abs(steering_angle) > 0.2 * steering_multi:
-                throttle = 0.3
+                throttle = 0.2
             elif speed < 15:
-                throttle = 0.8
+                throttle = 0.7
             else:
                 throttle = 0.4
             
