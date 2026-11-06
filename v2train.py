@@ -39,7 +39,7 @@ criterion = nn.MSELoss()
 
 
 # Training the Quantum Model
-epochs = 25
+epochs = 10
 for epoch in range(epochs):
     progress_bar = tqdm(dataloader, desc=f"Epoch {epoch+1}/{epochs}")
     for i, (batch_features, batch_labels) in enumerate(progress_bar):
