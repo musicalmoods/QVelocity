@@ -66,7 +66,12 @@ def telemetry(sid, data):
                 features = vision_model(img_tensor)
                 steering_angle = qnn_layer(features).item()
             
-            throttle = 0.2 if speed < 15 else 0.01  # Speed Controller 
+            if abs(steering_angle) > 0.4:
+                throttle = 0.01
+            elif speed < 15:
+                throttle = 0.25 # Improved throttler logic to ensure car handles turns better
+            else:
+                throttle = 0.1  
             
             sio.emit('steer', data={
                 'steering_angle': str(steering_angle),
