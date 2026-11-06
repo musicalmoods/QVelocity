@@ -49,7 +49,7 @@ for epoch in range(epochs):
         loss.backward() # Qiskit intercepts it and uses the Parameter-Shift Rule
         optimizer.step()
         progress_bar.set_postfix(loss=f"{loss.item():.4f}")
-    print(f"Epoch: {epoch} Completed!")
+    print(f"Epoch: {epoch+1} Completed!")
 
 
 torch.save(model.state_dict(), 'qnn_weightsv2.pt')
