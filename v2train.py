@@ -10,14 +10,14 @@ from tqdm import tqdm
 
 
 # Extract the data first and set up the tensors
-df = pd.read_csv('track2quantum_training_data_master.csv').sample(n=10000, random_state=67)
+df = pd.read_csv('quantum_training_data_master_impr.csv').sample(n=2000, random_state=67)
 features = torch.tensor(df[["f1", "f2", "f3", "f4"]].values, dtype=torch.float32)
 labels = torch.tensor(df["steering"].values, dtype=torch.float32).view(-1,1)
 
 
 # Loading the data ()
 dataset = TensorDataset(features, labels)
-dataloader = DataLoader(dataset, batch_size=16, shuffle=True)
+dataloader = DataLoader(dataset, batch_size=25, shuffle=True)
 
 
 # Building the Quantum Circuit
@@ -39,7 +39,7 @@ criterion = nn.MSELoss()
 
 
 # Training the Quantum Model
-epochs = 3
+epochs = 20
 for epoch in range(epochs):
     progress_bar = tqdm(dataloader, desc=f"Epoch {epoch+1}/{epochs}")
     for i, (batch_features, batch_labels) in enumerate(progress_bar):
@@ -52,6 +52,7 @@ for epoch in range(epochs):
     print(f"Epoch: {epoch+1} Completed!")
 
 
-torch.save(model.state_dict(), 'track2qnn_weights_10k.pt')
+
+torch.save(model.state_dict(),'track2qnn_weights_2000_impr.pt')
 # We use state_dict instead of torch.save() so that if the model architecture changes, the mathematical numbers stay the
 # same, so we can keep using the same model without it getting outdated.
