@@ -13,7 +13,6 @@ import eventlet
 import eventlet.wsgi
 from flask import Flask
 import sys
-import socket
 
 # Fallback option
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
