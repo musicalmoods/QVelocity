@@ -36,7 +36,7 @@ qnn = EstimatorQNN(
 )
 qnn_layer = TorchConnector(qnn)
 
-qnn_layer.load_state_dict(torch.load('qnn_weights.pt', map_location=device, weights_only=True))
+qnn_layer.load_state_dict(torch.load('qnn_weightsv2.pt', map_location=device, weights_only=True))
 qnn_layer.eval().to(device)
 
 
@@ -67,11 +67,11 @@ def telemetry(sid, data):
                 steering_angle = qnn_layer(features).item()
             
             if abs(steering_angle) > 0.4:
-                throttle = 0.01
+                throttle = 1
             elif speed < 15:
-                throttle = 0.25 # Improved throttler logic to ensure car handles turns better
+                throttle = 1 # Improved throttler logic to ensure car handles turns better
             else:
-                throttle = 0.1  
+                throttle = 1  
             
             sio.emit('steer', data={
                 'steering_angle': str(steering_angle),
