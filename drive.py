@@ -100,10 +100,7 @@ def telemetry(sid, data):
 if __name__ == '__main__':
     app = socketio.Middleware(sio, app)
     
-    server_socket = eventlet.listen(('', 4567))
-    
-    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    
+    server_socket = eventlet.listen(('localhost', 4567))
     print("[SYSTEM] Server bound to port 4567. Waiting for simulator...")
     
     try:
