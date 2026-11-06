@@ -6,17 +6,18 @@ from qiskit.circuit.library import ZZFeatureMap, RealAmplitudes
 from qiskit.quantum_info import SparsePauliOp
 from qiskit_machine_learning.neural_networks import EstimatorQNN
 from qiskit_machine_learning.connectors import TorchConnector
+from tqdm import tqdm
 
 
 # Extract the data first and set up the tensors
 df = pd.read_csv('quantum_training_data_master.csv').sample(n=2500, random_state=67)
-features = torch.tensor(df["f1", "f2", "f3", "f4"], dtype=torch.float32)
-labels = torch.tensor(df["steering"], dtype=torch.float32).view(-1,1) # Why didnt we also use this view above?
+features = torch.tensor(df[["f1", "f2", "f3", "f4"]].values, dtype=torch.float32)
+labels = torch.tensor(df["steering"].values, dtype=torch.float32).view(-1,1)
 
 
 # Loading the data ()
 dataset = TensorDataset(features, labels)
-dataloader = DataLoader(dataset, batch_size=128, shuffle=True)
+dataloader = DataLoader(dataset, batch_size=16, shuffle=True)
 
 
 # Building the Quantum Circuit
@@ -40,12 +41,15 @@ criterion = nn.MSELoss()
 # Training the Quantum Model
 epochs = 10
 for epoch in range(epochs):
-    for i, (batch_features, batch_labels) in enumerate(dataloader):
+    progress_bar = tqdm(dataloader, desc=f"Epoch {epoch+1}/{epochs}")
+    for i, (batch_features, batch_labels) in enumerate(progress_bar):
         optimizer.zero_grad() # Clean slate for every batch
         outputs = model(batch_features)
         loss = criterion(outputs, batch_labels)
-        loss.backwards()
+        loss.backward() # Qiskit intercepts it and uses the Parameter-Shift Rule
         optimizer.step()
+        progress_bar.set_postfix(loss=f"{loss.item():.4f}")
+    print(f"Epoch: {epoch} Completed!")
 
 
 torch.save(model.state_dict(), 'qnn_weightsv2.pt')
