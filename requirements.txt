@@ -1,0 +1,12 @@
+torch>=2.6.0
+torchvision>=0.21.0
+pandas
+Pillow
+qiskit>=1.0.0
+qiskit-machine-learning
+Flask
+Flask-SocketIO==4.3.1
+python-socketio==4.6.0
+python-engineio==3.13.2
+eventlet
+tqdm
