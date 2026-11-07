@@ -10,10 +10,13 @@ from tqdm import tqdm
 
 
 # Extract the data first and set up the tensors
-df = pd.read_csv('track2quantum_training_data_master.csv').sample(n=10000, random_state=67)
-features = torch.tensor(df[["f1", "f2", "f3", "f4"]].values, dtype=torch.float32)
-labels = torch.tensor(df["steering"].values, dtype=torch.float32).view(-1,1)
-
+raw_df = pd.read_csv('track2quantum_training_data_master.csv')
+straight_driving = raw_df[raw_df['steering'] == 0.0]
+curve_driving = raw_df[raw_df['steering'] != 0.0]
+straight_driving = straight_driving.sample(frac=0.2, random_state=42)
+balanced_df = pd.concat([straight_driving, curve_driving]).sample(n=1200, random_state=67)
+features = torch.tensor(balanced_df[["f1", "f2", "f3", "f4"]].values, dtype=torch.float32)
+labels = torch.tensor(balanced_df["steering"].values, dtype=torch.float32).view(-1,1)
 
 # Loading the data ()
 dataset = TensorDataset(features, labels)
@@ -39,7 +42,7 @@ criterion = nn.MSELoss()
 
 
 # Training the Quantum Model
-epochs = 3
+epochs = 25
 for epoch in range(epochs):
     progress_bar = tqdm(dataloader, desc=f"Epoch {epoch+1}/{epochs}")
     for i, (batch_features, batch_labels) in enumerate(progress_bar):
@@ -52,6 +55,6 @@ for epoch in range(epochs):
     print(f"Epoch: {epoch+1} Completed!")
 
 
-torch.save(model.state_dict(), 'track2qnn_weights_10k.pt')
+torch.save(model.state_dict(), 'TRACK2DELL_weights.pt')
 # We use state_dict instead of torch.save() so that if the model architecture changes, the mathematical numbers stay the
 # same, so we can keep using the same model without it getting outdated.
