@@ -20,7 +20,7 @@ labels = torch.tensor(balanced_df["steering"].values, dtype=torch.float32).view(
 
 # Loading the data ()
 dataset = TensorDataset(features, labels)
-dataloader = DataLoader(dataset, batch_size=16, shuffle=True)
+dataloader = DataLoader(dataset, batch_size=25, shuffle=True)
 
 
 # Building the Quantum Circuit
