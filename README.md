@@ -10,6 +10,11 @@ Rather than relying purely on classical deep learning, QVelocity fuses PyTorch w
 
 ## 🚀 Getting Started
 
+### Prerequisites
+
+* Python 3.11
+* Udacity Self-Driving Car Simulator
+
 ### 1. Installation
 
 We strongly recommend running QVelocity in an isolated virtual environment to prevent dependency conflicts.
