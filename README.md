@@ -13,7 +13,7 @@ Rather than relying purely on classical deep learning, QVelocity fuses PyTorch w
 * **Classical Compression:** Leverages a pre-trained ResNet18 foundation to reduce high-dimensional camera frames ($320 \times 160 \times 3$) into 4 meaningful numerical features.
 * **Compact Quantum Brain:** Uses a 4-qubit quantum circuit featuring `ZZFeatureMap` for quantum state encoding and `RealAmplitudes` ($reps=3$) for 16 trainable parameters.
 * **PyTorch-Qiskit Integration:** Uses `TorchConnector` to bridge Qiskit's `EstimatorQNN` into PyTorch autograd for gradient descent optimization using the Parameter-Shift Rule.
-* **Robust Data Augmentation:** Expanded dataset to over **140,000 augmented samples** using multiple camera offsets (center, left $+0.2$, right $-0.2$) and steering sign inversion for randomness.
+* **Robust Data Augmentation:** Expanded dataset to over **140,000 augmented samples** using multiple camera offsets (center, left +0.2, right -0.2) and steering sign inversion for randomness.
 
 ---
 
@@ -26,7 +26,7 @@ Rather than relying purely on classical deep learning, QVelocity fuses PyTorch w
 
 ### 1. Installation
 
-We strongly recommend running QVelocity in an isolated virtual environment to prevent dependency conflicts.
+We strongly recommend running QVelocity in an isolated virtual environment to prevent dependency conflicts with other programs.
 
 # Clone the repository
 ```bash
@@ -60,4 +60,4 @@ To deploy the trained model to the simulator:
 python drive.py
 ```
 
-2. Open the **Udacity Simulator** and select **Autonomous Mode**. The car will instantly begin driving using the quantum network.
+2. Open the **Udacity Simulator** and select **Autonomous Mode**. The car will instantly begin driving itself using the quantum network through the WebSocket connection.
