@@ -20,7 +20,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 vision_model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
 vision_model.fc = torch.nn.Linear(vision_model.fc.in_features, 4)
 vision_model.eval().to(device)
-vision_model.load_state_dict(torch.load('track2vision_weights.pt', weights_only=True)) # track2vision_weights for Dell model
+vision_model.load_state_dict(torch.load('track2vision_weights.pt', weights_only=True)) # track2vision_weights for final model
 
 num_qubits = 4
 feature_map = ZZFeatureMap(feature_dimension=num_qubits, reps=1)
@@ -37,7 +37,7 @@ qnn = EstimatorQNN(
 qnn_layer = TorchConnector(qnn)
 
 # Security precautions
-qnn_layer.load_state_dict(torch.load('TRACK2DELL_weights.pt', map_location=device, weights_only=True))
+qnn_layer.load_state_dict(torch.load('qnn_weights_final.pt', map_location=device, weights_only=True))
 qnn_layer.eval().to(device)
 
 transform = transforms.Compose([
@@ -74,7 +74,7 @@ def telemetry(sid, data):
             image = Image.open(BytesIO(image_data))
             
             img_tensor = transform(image).unsqueeze(0).to(device)
-            steering_multi = 1 # for the dell model, use 1
+            steering_multi = 1
             with torch.no_grad():
                 features = vision_model(img_tensor)
                 steering_angle = qnn_layer(features).item() * steering_multi
