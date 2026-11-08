@@ -8,12 +8,13 @@ Rather than relying purely on classical deep learning, QVelocity fuses PyTorch w
 
 ---
 
-## Key Features
+## System Architecture
+The driving pipeline operates in two distinct phases per frame: classical feature extraction and quantum expectation measurement.
 
-* **Classical Compression:** Leverages a pre-trained ResNet18 foundation to reduce high-dimensional camera frames ($320 \times 160 \times 3$) into 4 meaningful numerical features.
-* **Compact Quantum Brain:** Uses a 4-qubit quantum circuit featuring `ZZFeatureMap` for quantum state encoding and `RealAmplitudes` ($reps=3$) for 16 trainable parameters.
-* **PyTorch-Qiskit Integration:** Uses `TorchConnector` to bridge Qiskit's `EstimatorQNN` into PyTorch autograd for gradient descent optimization using the Parameter-Shift Rule.
-* **Robust Data Augmentation:** Expanded dataset to over **140,000 augmented samples** using multiple camera offsets (center, left +0.2, right -0.2) and steering sign inversion for randomness.
+* **Classical Vision:** Raw RGB camera feeds from the simulator are ingested and compressed by a modified ResNet18 model down to 4 features `f1, f2, f3, f4`
+* **Quantum Angle Encoding** `(ZZFeatureMap)`: The 4 classical features are translated into physical rotations on 4 qubits. We utilize a Z-axis feature map to entangle the data for the model to analyze.
+* **The Quantum Brain** `(RealAmplitudes)`: Serving as the actual "neural network," this hardware-efficient ansatz consists of 3 repeating layers of rotation and CNOT gates. It requires only 16 trainable parameters to learn the driving logic.
+* **Continuous Steering** `(EstimatorQNN)`: Unlike classifiers that jerk the wheel hard left or right, we measure the Z-axis expectation value of the collapsed wave function to output a smooth, continuous steering decimal between -1.0 and 1.0.
 
 ---
 
@@ -28,32 +29,32 @@ Rather than relying purely on classical deep learning, QVelocity fuses PyTorch w
 
 We strongly recommend running QVelocity in an isolated virtual environment to prevent dependency conflicts with other programs.
 
-# Clone the repository
+#### Clone the repository
 ```bash
 git clone https://github.com/musicalmoods/Qiskit-Fall-Fest-2026.git
 cd Qiskit-Fall-Fest-2026
 ```
-# Create and activate a virtual environment (Python 3.11 recommended)
+#### Create and activate a virtual environment (Python 3.11 recommended)
 ```bash
 python3.11 -m venv venv
 ```
-# Windows Activation:
+#### Windows Activation:
 ```bash
 venv\Scripts\Activate.ps1
 ```
-# Mac/Linux Activation:
+#### Mac/Linux Activation:
 ```bash
 source venv/bin/activate
 ```
 
-# Install the dependencies
+#### Install the dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
 ### 2. Hitting the Track
 
-To deploy the trained model to the simulator:
+#### To deploy the trained model to the simulator:
 
 1. Run the server:
 ```bash
