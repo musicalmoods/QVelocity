@@ -55,6 +55,6 @@ for epoch in range(epochs):
     print(f"Epoch: {epoch+1} Completed!")
 
 
-torch.save(model.state_dict(), 'TRACK2DELL_weights.pt')
+torch.save(model.state_dict(), 'TRACK2DELL_weights.pt') # Use with 'track2vision_weights.pt'
 # We use state_dict instead of torch.save() so that if the model architecture changes, the mathematical numbers stay the
 # same, so we can keep using the same model without it getting outdated.
