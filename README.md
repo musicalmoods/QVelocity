@@ -8,6 +8,15 @@ Rather than relying purely on classical deep learning, QVelocity fuses PyTorch w
 
 ---
 
+## Key Features
+
+* **Classical Compression:** Leverages a pre-trained ResNet18 foundation to reduce high-dimensional camera frames ($320 \times 160 \times 3$) into 4 meaningful numerical features.
+* **Compact Quantum Brain:** Uses a 4-qubit quantum circuit featuring `ZZFeatureMap` for quantum state encoding and `RealAmplitudes` ($reps=3$) for 16 trainable parameters.
+* **PyTorch-Qiskit Integration:** Uses `TorchConnector` to bridge Qiskit's `EstimatorQNN` into PyTorch autograd for gradient descent optimization using the Parameter-Shift Rule.
+* **Robust Data Augmentation:** Expanded dataset to over **140,000 augmented samples** using multiple camera offsets (center, left $+0.2$, right $-0.2$) and steering sign inversion for randomness.
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
