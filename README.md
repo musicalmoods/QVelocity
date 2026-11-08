@@ -62,3 +62,20 @@ python drive.py
 ```
 
 2. Open the **Udacity Simulator** and select **Autonomous Mode**. The car will instantly begin driving itself using the quantum network through the WebSocket connection.
+
+## ⚠️ Troubleshooting: Intel 10th Gen+ CPU Crash
+If you are running an Intel processor newer than 9th Generation (10th Gen Intel or later), the Udacity Simulator may instantly crash on startup due to a known OpenSSL compatibility bug in older versions of the Unity Engine.
+
+To fix this, do not launch the simulator executable directly. Instead, create a `.bat` file in your simulator directory to set the correct environment variable bypass before launching.
+
+1. Create a file named `gameplay.txt`
+2. Add the following code:
+```bat
+@echo off
+set OPENSSL_ia32cap=~0x200000200000000
+start "" "beta_simulator.exe"
+```
+3. Save the file as `gameplay.bat`
+4. Run `gameplay.bat` to open the simulator safely.
+
+(Note: This environment variable change is strictly temporary. Because it is executed locally inside the `.bat` file, the `OPENSSL_ia32cap` variable only applies to this specific launch of the simulator. Your system's global environment variables remain untouched and revert back to normal as soon as the script finishes execution.)
