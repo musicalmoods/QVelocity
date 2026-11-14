@@ -32,7 +32,7 @@ We strongly recommend running QVelocity in an isolated virtual environment to pr
 #### Clone the repository
 ```bash
 git clone https://github.com/musicalmoods/QVelocity.git
-cd Qiskit-Fall-Fest-2026
+cd QVelocity
 ```
 #### Create and activate a virtual environment (Python 3.11 recommended)
 ```bash
